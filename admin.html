@@ -198,6 +198,11 @@
             gap: 12px;
             grid-template-columns: 1fr 1fr;
         }
+           .three {
+            display: grid;
+            gap: 12px;
+            grid-template-columns: 1fr 1fr 1fr;
+        }
 
         .status {
             border-radius: var(--radius);
@@ -464,28 +469,30 @@
                         Product Name
                         <input name="name" placeholder="Fresh Broccoli (500g)" required>
                     </label>
-                    <div class="two">
+                    <!-- <div class="two"> -->
                         <label>
                             Category
                             <input name="category" placeholder="Fresh Vegetables">
                         </label>
-                        <label>
-                            Discount
-                            <input name="discount" placeholder="Auto calculated">
-                        </label>
-                    </div>
+                        
+                    <!-- </div> -->
                     <label>
                         Description
                         <textarea name="description" placeholder="Healthy green broccoli for nutritious meals"></textarea>
                     </label>
-                    <div class="two">
-                        <label>
-                            Price
-                            <input name="price" inputmode="decimal" placeholder="90" required>
-                        </label>
+                    <div class="three">
                         <label>
                             Original Price
-                            <input name="originalPrice" inputmode="decimal" placeholder="150">
+                            <input name="originalPrice" type="number" inputmode="numeric" min="0" step="1" placeholder="150">
+                        </label>
+                        <label>
+                            Discounted Price
+                            <input name="price" type="number" inputmode="numeric" min="0" step="1" placeholder="90" required>
+                        </label>
+                        
+                        <label>
+                            Discount
+                            <input name="discount" placeholder="Auto calculated">
                         </label>
                     </div>
                     <div class="two">
@@ -613,8 +620,8 @@
             loadProducts();
         });
 
-        productForm.price.addEventListener("input", updateDiscountPreview);
-        productForm.originalPrice.addEventListener("input", updateDiscountPreview);
+        productForm.price.addEventListener("input", handlePriceInput);
+        productForm.originalPrice.addEventListener("input", handlePriceInput);
         productForm.shop.addEventListener("change", updateFormForShop);
 
         cancelEdit.addEventListener("click", resetForm);
@@ -747,8 +754,8 @@
             productForm.elements.category.value = product.category || "";
             productForm.elements.discount.value = product.discount || "";
             productForm.elements.description.value = product.description || "";
-            productForm.elements.price.value = product.price || "";
-            productForm.elements.originalPrice.value = product.originalPrice || "";
+            productForm.elements.price.value = getNumericInputValue(product.price);
+            productForm.elements.originalPrice.value = getNumericInputValue(product.originalPrice);
             productForm.elements.footerLeft.value = product.footerLeft || "";
             productForm.elements.footerRight.value = product.footerRight || "";
             productForm.elements.startDate.value = toDateInputValue(product.startDate);
@@ -805,6 +812,11 @@
             updateDiscountPreview();
         }
 
+        function handlePriceInput(event) {
+            event.target.value = getNumericInputValue(event.target.value);
+            updateDiscountPreview();
+        }
+
         function calculateDiscount(priceValue, originalPriceValue) {
             const price = extractNumber(priceValue);
             const originalPrice = extractNumber(originalPriceValue);
@@ -816,6 +828,10 @@
         function extractNumber(value) {
             const number = Number(String(value || "").replace(/[^0-9.]/g, ""));
             return Number.isFinite(number) ? number : 0;
+        }
+
+        function getNumericInputValue(value) {
+            return String(value || "").replace(/[^0-9]/g, "");
         }
 
         function formatPrice(value) {
