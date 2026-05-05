@@ -744,6 +744,7 @@
                     <a href="#today">Today's Offers</a>
                     <a href="#week">Week Offers</a>
                     <a href="#special">Special Offers</a>
+                    <a href="./juice-shop.html">Juice & Snacks</a>
                 </nav>
                 <a href="https://wa.me/94XXXXXXXXX" target="_blank" rel="noreferrer" class="whatsapp-btn" data-whatsapp-link>WhatsApp Us</a>
             </div>
@@ -963,7 +964,7 @@
         <section class="store-strip" aria-label="Store information">
             <div>
                 <h2>Fresh groceries, friendly prices, easy shopping.</h2>
-                <p>Visit <span data-shop-name>Danu Multi Shop</span> on B269, Mallavi for vegetables, fruits, snacks, household goods, and daily essentials.</p>
+                <p>Visit <span data-shop-name>Danu Multi Shop</span> on B269, Mallavi for vegetables, fruits, snacks, household goods, and daily essentials. For fresh juice and rolls, open the <a href="./juice-shop.html">Juice & Snacks page</a>.</p>
             </div>
             <div class="hours">
                 <strong>8:00 AM - 10:00 PM</strong>
@@ -985,6 +986,7 @@
                     <li><a href="#today">Today's Offers</a></li>
                     <li><a href="#week">Week Offers</a></li>
                     <li><a href="#special">Special Offers</a></li>
+                    <li><a href="./juice-shop.html">Juice & Snacks</a></li>
                     <li><a href="#contact">Contact Us</a></li>
                 </ul>
             </section>
@@ -1055,7 +1057,7 @@
         }
 
         function loadProducts() {
-            const products = getProducts();
+            const products = getProducts().filter((product) => product.available !== false);
             renderProducts(todayProducts, products.filter((product) => product.section === "today"), "No today's offers added yet.");
             renderProducts(weekProducts, products.filter((product) => product.section === "week" || product.section === "weekend"), "No week offers added yet.");
             renderProducts(specialProducts, products.filter((product) => product.section === "special"), "No special offers added yet.");

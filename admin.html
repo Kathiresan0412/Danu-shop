@@ -109,6 +109,11 @@
             white-space: nowrap;
         }
 
+        .top-links {
+            display: flex;
+            gap: 10px;
+        }
+
         .home-link {
             background: var(--mint);
             color: var(--green-dark);
@@ -269,6 +274,22 @@
             white-space: nowrap;
         }
 
+        .pill.unavailable {
+            background: #fff0f2;
+            color: var(--red);
+        }
+
+        .checkbox-label {
+            align-items: center;
+            display: flex;
+            gap: 10px;
+        }
+
+        .checkbox-label input {
+            min-height: auto;
+            width: auto;
+        }
+
         .row-actions {
             display: flex;
             gap: 8px;
@@ -316,6 +337,12 @@
             .home-link {
                 width: 100%;
             }
+
+            .top-links {
+                display: grid;
+                grid-template-columns: 1fr;
+                width: 100%;
+            }
         }
 
         @media (max-width: 540px) {
@@ -343,15 +370,17 @@
                 <img src="./images/logo.png" alt="Danu Multi Shop logo" data-shop-logo>
                 <div>
                     <strong><span data-shop-name>Danu Multi Shop</span> Admin</strong>
-                    <span>Add offers without a database</span>
+                    <!-- <span>Add offers without a database</span> -->
                 </div>
             </div>
-            <a href="./index.html" class="home-link">View Website</a>
+            <div class="top-links">
+                <a href="./index.html" class="home-link">Main Shop</a>
+                <a href="./juice-shop.html" class="home-link">Juice & Snacks</a>
+            </div>
         </div>
 
-        <section id="login-panel" class="panel">
-            <h1>Admin Login</h1>
-            <p>Use the username and password from `app-data.js`.</p>
+        <section id="login-panel" class="panel col-6">
+            <h1 class="pading-right-90px">Hi Danu, 👋</h1>
             <form id="login-form">
                 <label>
                     Username
@@ -412,6 +441,13 @@
                     <input type="hidden" name="id">
                     <div class="two">
                         <label>
+                            Shop
+                            <select name="shop">
+                                <option value="grocery">Danu Multi Shop</option>
+                                <option value="juice">Fresh Juice & Snacks</option>
+                            </select>
+                        </label>
+                        <label id="section-field">
                             Section
                             <select name="section">
                                 <option value="today">Today's Offers</option>
@@ -462,6 +498,10 @@
                             <input name="footerRight" placeholder="500g">
                         </label>
                     </div>
+                    <label class="checkbox-label">
+                        <input name="available" type="checkbox" checked>
+                        Show this product on the website
+                    </label>
                     <div class="two">
                         <label>
                             Start Date
@@ -501,6 +541,7 @@
         const saveButton = document.querySelector("#save-button");
         const cancelEdit = document.querySelector("#cancel-edit");
         const logoPreview = document.querySelector("#logo-preview");
+        const sectionField = document.querySelector("#section-field");
 
         loginForm.addEventListener("submit", (event) => {
             event.preventDefault();
@@ -545,7 +586,8 @@
         productForm.addEventListener("submit", (event) => {
             event.preventDefault();
             const payload = Object.fromEntries(new FormData(productForm));
-            const products = getProducts();
+            const shop = payload.shop === "juice" ? "juice" : "grocery";
+            const products = getProducts(shop);
 
             if (!payload.name || !payload.price || !payload.imageText) {
                 showStatus("#product-status", "Could not save product. Please check required fields.", "error");
@@ -561,7 +603,7 @@
                 products.push(product);
             }
 
-            if (!saveProducts(products)) {
+            if (!saveProducts(shop, products)) {
                 showStatus("#product-status", "Browser storage is blocked. Try opening this page in Chrome.", "error");
                 return;
             }
@@ -573,6 +615,7 @@
 
         productForm.price.addEventListener("input", updateDiscountPreview);
         productForm.originalPrice.addEventListener("input", updateDiscountPreview);
+        productForm.shop.addEventListener("change", updateFormForShop);
 
         cancelEdit.addEventListener("click", resetForm);
 
@@ -581,7 +624,8 @@
             if (!button) return;
 
             const productId = button.dataset.id;
-            const products = getProducts();
+            const shop = button.dataset.shop || "grocery";
+            const products = getProducts(shop);
             const product = products.find((item) => item.id === productId);
             if (!product) return;
 
@@ -597,7 +641,7 @@
                 if (!shouldDelete) return;
 
                 const nextProducts = products.filter((item) => item.id !== productId);
-                if (!saveProducts(nextProducts)) {
+                if (!saveProducts(shop, nextProducts)) {
                     showStatus("#product-status", "Browser storage is blocked. Try opening this page in Chrome.", "error");
                     return;
                 }
@@ -618,40 +662,51 @@
         applyProfile(getProfile());
 
         function loadProducts() {
-            const products = getProducts();
+            const products = [
+                ...getProducts("grocery").map((product) => ({ ...product, shop: "grocery" })),
+                ...getProducts("juice").map((product) => ({ ...product, shop: "juice" }))
+            ];
+
             productsList.innerHTML = products.map((product) => `
                 <article class="product-row">
                     <div class="emoji">${escapeHtml(product.imageText)}</div>
                     <div>
                         <strong>${escapeHtml(product.name)}</strong>
                         <span>${escapeHtml(product.price)} ${product.originalPrice ? `| ${escapeHtml(product.originalPrice)}` : ""}</span>
-                        <span>${escapeHtml(formatDateRange(product))}</span>
+                        <span>${escapeHtml(shopLabel(product.shop))} | ${product.available === false ? "Unavailable" : "Showing"} | ${escapeHtml(formatDateRange(product))}</span>
                     </div>
-                    <div class="pill">${escapeHtml(sectionLabel(product.section))}</div>
+                    <div class="pill ${product.available === false ? "unavailable" : ""}">${product.available === false ? "Hidden" : escapeHtml(sectionLabel(product.section, product.shop))}</div>
                     <div class="row-actions">
-                        <button type="button" class="small-btn edit-btn" data-action="edit" data-id="${escapeHtml(product.id)}">Edit</button>
-                        <button type="button" class="small-btn delete-btn" data-action="delete" data-id="${escapeHtml(product.id)}">Delete</button>
+                        <button type="button" class="small-btn edit-btn" data-action="edit" data-shop="${escapeHtml(product.shop)}" data-id="${escapeHtml(product.id)}">Edit</button>
+                        <button type="button" class="small-btn delete-btn" data-action="delete" data-shop="${escapeHtml(product.shop)}" data-id="${escapeHtml(product.id)}">Delete</button>
                     </div>
                 </article>
             `).join("");
         }
 
-        function getProducts() {
+        function getProducts(shop = "grocery") {
+            const storageKey = shop === "juice" ? config.juiceStorageKey : config.storageKey;
+            const defaultProducts = shop === "juice" ? config.juiceProducts : config.products;
+
             try {
-                const savedProducts = localStorage.getItem(config.storageKey);
-                const products = savedProducts ? JSON.parse(savedProducts) : config.products.slice();
+                const savedProducts = localStorage.getItem(storageKey);
+                const products = savedProducts ? JSON.parse(savedProducts) : defaultProducts.slice();
                 return products.map((product) => ({
                     ...product,
+                    shop,
+                    available: product.available !== false,
                     section: product.section === "weekend" ? "week" : product.section
                 }));
             } catch (error) {
-                return config.products.slice();
+                return defaultProducts.slice();
             }
         }
 
-        function saveProducts(products) {
+        function saveProducts(shop, products) {
+            const storageKey = shop === "juice" ? config.juiceStorageKey : config.storageKey;
+
             try {
-                localStorage.setItem(config.storageKey, JSON.stringify(products));
+                localStorage.setItem(storageKey, JSON.stringify(products));
                 return true;
             } catch (error) {
                 return false;
@@ -659,27 +714,33 @@
         }
 
         function normalizeProduct(product) {
-            const section = ["today", "week", "special"].includes(product.section) ? product.section : "today";
+            const shop = product.shop === "juice" ? "juice" : "grocery";
+            const section = shop === "juice"
+                ? (cleanText(product.section) || "juice")
+                : (["today", "week", "special"].includes(product.section) ? product.section : "today");
 
             return {
                 id: cleanText(product.id) || `${Date.now()}`,
+                shop,
                 section,
                 name: cleanText(product.name),
-                category: cleanText(product.category) || "Fresh Grocery",
-                description: cleanText(product.description) || "Fresh item available at Danu Multi Shop.",
+                category: cleanText(product.category) || (shop === "juice" ? "Fresh Juice & Snacks" : "Fresh Grocery"),
+                description: cleanText(product.description) || (shop === "juice" ? "Fresh item available at the juice shop." : "Fresh item available at Danu Multi Shop."),
                 imageText: cleanText(product.imageText),
                 price: formatPrice(product.price),
-                originalPrice: formatPrice(product.originalPrice),
-                discount: calculateDiscount(product.price, product.originalPrice) || cleanText(product.discount) || "Special",
-                footerLeft: cleanText(product.footerLeft) || "Visit our store",
-                footerRight: cleanText(product.footerRight) || sectionLabel(section),
+                originalPrice: shop === "juice" ? "" : formatPrice(product.originalPrice),
+                discount: shop === "juice" ? "" : (calculateDiscount(product.price, product.originalPrice) || cleanText(product.discount) || "Special"),
+                footerLeft: cleanText(product.footerLeft) || (shop === "juice" ? "Freshly made" : "Visit our store"),
+                footerRight: cleanText(product.footerRight) || (shop === "juice" ? "Available now" : sectionLabel(section, shop)),
                 startDate: cleanText(product.startDate),
-                endDate: cleanText(product.endDate)
+                endDate: cleanText(product.endDate),
+                available: product.available === "on"
             };
         }
 
         function fillForm(product) {
             productForm.elements.id.value = product.id || "";
+            productForm.elements.shop.value = product.shop === "juice" ? "juice" : "grocery";
             productForm.elements.section.value = product.section === "weekend" ? "week" : product.section || "today";
             productForm.elements.imageText.value = product.imageText || "";
             productForm.elements.name.value = product.name || "";
@@ -692,10 +753,12 @@
             productForm.elements.footerRight.value = product.footerRight || "";
             productForm.elements.startDate.value = toDateInputValue(product.startDate);
             productForm.elements.endDate.value = toDateInputValue(product.endDate);
+            productForm.elements.available.checked = product.available !== false;
 
             formTitle.textContent = "Edit Product";
             saveButton.textContent = "Save Changes";
             cancelEdit.classList.remove("hidden");
+            updateFormForShop();
             updateDiscountPreview();
         }
 
@@ -705,11 +768,41 @@
             formTitle.textContent = "Add Product";
             saveButton.textContent = "Add Product";
             cancelEdit.classList.add("hidden");
+            productForm.elements.available.checked = true;
+            updateFormForShop();
         }
 
         function updateDiscountPreview() {
+            if (productForm.elements.shop.value === "juice") {
+                productForm.elements.discount.value = "";
+                productForm.elements.originalPrice.value = "";
+                return;
+            }
+
             const discount = calculateDiscount(productForm.elements.price.value, productForm.elements.originalPrice.value);
             if (discount) productForm.elements.discount.value = discount;
+        }
+
+        function updateFormForShop() {
+            const isJuiceShop = productForm.elements.shop.value === "juice";
+            sectionField.classList.toggle("hidden", isJuiceShop);
+            productForm.elements.section.value = isJuiceShop ? "juice" : (productForm.elements.section.value || "today");
+            productForm.elements.originalPrice.closest("label").classList.toggle("hidden", isJuiceShop);
+            productForm.elements.discount.closest("label").classList.toggle("hidden", isJuiceShop);
+            if (isJuiceShop) {
+                productForm.elements.category.placeholder = "Fresh Juice or Snacks";
+                productForm.elements.name.placeholder = "Fresh Orange Juice";
+                productForm.elements.imageText.placeholder = "🍊";
+                productForm.elements.footerLeft.placeholder = "Freshly made";
+                productForm.elements.footerRight.placeholder = "Cup";
+            } else {
+                productForm.elements.category.placeholder = "Fresh Vegetables";
+                productForm.elements.name.placeholder = "Fresh Broccoli (500g)";
+                productForm.elements.imageText.placeholder = "🥦";
+                productForm.elements.footerLeft.placeholder = "Week deal";
+                productForm.elements.footerRight.placeholder = "500g";
+            }
+            updateDiscountPreview();
         }
 
         function calculateDiscount(priceValue, originalPriceValue) {
@@ -817,10 +910,15 @@
             });
         }
 
-        function sectionLabel(section) {
+        function sectionLabel(section, shop = "grocery") {
+            if (shop === "juice") return section === "snack" ? "Snack" : "Juice";
             if (section === "week" || section === "weekend") return "Week";
             if (section === "special") return "Special";
             return "Today";
+        }
+
+        function shopLabel(shop) {
+            return shop === "juice" ? "Fresh Juice & Snacks" : "Danu Multi Shop";
         }
 
         function formatDateRange(product) {

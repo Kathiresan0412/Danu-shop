@@ -6,6 +6,7 @@ window.DANU_CONFIG = {
     adminPassword: "admin123",
     whatsappNumber: "94771234567",
     storageKey: "danu-products",
+    juiceStorageKey: "danu-juice-products",
     profileStorageKey: "danu-profile",
     products: [
         {
@@ -134,6 +135,60 @@ window.DANU_CONFIG = {
             footerRight: "5kg",
             startDate: "",
             endDate: ""
+        }
+    ],
+    juiceProducts: [
+        {
+            id: "orange-juice",
+            shop: "juice",
+            section: "juice",
+            name: "Fresh Orange Juice",
+            category: "Fresh Juice",
+            description: "Made fresh for a cool, sweet, and refreshing drink.",
+            imageText: "🍊",
+            price: "Rs. 180",
+            footerLeft: "Freshly made",
+            footerRight: "Cup",
+            available: true
+        },
+        {
+            id: "mango-juice",
+            shop: "juice",
+            section: "juice",
+            name: "Mango Juice",
+            category: "Fresh Juice",
+            description: "Smooth mango juice with a rich fruit taste.",
+            imageText: "🥭",
+            price: "Rs. 200",
+            footerLeft: "Freshly made",
+            footerRight: "Cup",
+            available: true
+        },
+        {
+            id: "vegetable-rolls",
+            shop: "juice",
+            section: "snack",
+            name: "Vegetable Rolls",
+            category: "Snacks",
+            description: "Crispy rolls for a quick tea-time bite.",
+            imageText: "🌯",
+            price: "Rs. 80",
+            footerLeft: "Snack item",
+            footerRight: "Each",
+            available: true
+        },
+        {
+            id: "fish-rolls",
+            shop: "juice",
+            section: "snack",
+            name: "Fish Rolls",
+            category: "Snacks",
+            description: "Hot, crispy rolls with a tasty fish filling.",
+            imageText: "🥐",
+            price: "Rs. 100",
+            footerLeft: "Snack item",
+            footerRight: "Each",
+            available: true
         }
     ]
 };
