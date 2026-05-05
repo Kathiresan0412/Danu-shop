@@ -435,7 +435,7 @@
                         </label>
                         <label>
                             Discount
-                            <input name="discount" placeholder="40% OFF">
+                            <input name="discount" placeholder="Auto calculated">
                         </label>
                     </div>
                     <label>
@@ -445,11 +445,11 @@
                     <div class="two">
                         <label>
                             Price
-                            <input name="price" placeholder="Rs. 90" required>
+                            <input name="price" inputmode="decimal" placeholder="90" required>
                         </label>
                         <label>
                             Original Price
-                            <input name="originalPrice" placeholder="Rs. 150">
+                            <input name="originalPrice" inputmode="decimal" placeholder="150">
                         </label>
                     </div>
                     <div class="two">
@@ -571,6 +571,9 @@
             loadProducts();
         });
 
+        productForm.price.addEventListener("input", updateDiscountPreview);
+        productForm.originalPrice.addEventListener("input", updateDiscountPreview);
+
         cancelEdit.addEventListener("click", resetForm);
 
         productsList.addEventListener("click", (event) => {
@@ -665,9 +668,9 @@
                 category: cleanText(product.category) || "Fresh Grocery",
                 description: cleanText(product.description) || "Fresh item available at Danu Multi Shop.",
                 imageText: cleanText(product.imageText),
-                price: cleanText(product.price),
-                originalPrice: cleanText(product.originalPrice),
-                discount: cleanText(product.discount) || "Special",
+                price: formatPrice(product.price),
+                originalPrice: formatPrice(product.originalPrice),
+                discount: calculateDiscount(product.price, product.originalPrice) || cleanText(product.discount) || "Special",
                 footerLeft: cleanText(product.footerLeft) || "Visit our store",
                 footerRight: cleanText(product.footerRight) || sectionLabel(section),
                 startDate: cleanText(product.startDate),
@@ -693,6 +696,7 @@
             formTitle.textContent = "Edit Product";
             saveButton.textContent = "Save Changes";
             cancelEdit.classList.remove("hidden");
+            updateDiscountPreview();
         }
 
         function resetForm() {
@@ -701,6 +705,30 @@
             formTitle.textContent = "Add Product";
             saveButton.textContent = "Add Product";
             cancelEdit.classList.add("hidden");
+        }
+
+        function updateDiscountPreview() {
+            const discount = calculateDiscount(productForm.elements.price.value, productForm.elements.originalPrice.value);
+            if (discount) productForm.elements.discount.value = discount;
+        }
+
+        function calculateDiscount(priceValue, originalPriceValue) {
+            const price = extractNumber(priceValue);
+            const originalPrice = extractNumber(originalPriceValue);
+
+            if (!price || !originalPrice || originalPrice <= price) return "";
+            return `${Math.round(((originalPrice - price) / originalPrice) * 100)}% OFF`;
+        }
+
+        function extractNumber(value) {
+            const number = Number(String(value || "").replace(/[^0-9.]/g, ""));
+            return Number.isFinite(number) ? number : 0;
+        }
+
+        function formatPrice(value) {
+            const price = extractNumber(value);
+            if (!price) return "";
+            return `Rs. ${Number.isInteger(price) ? price : price.toFixed(2)}`;
         }
 
         function getProfile() {
