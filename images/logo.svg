@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Background Circle -->
+  <circle cx="100" cy="100" r="95" fill="#667eea" opacity="0.2"/>
+  <circle cx="100" cy="100" r="90" fill="white" stroke="#667eea" stroke-width="2"/>
+  
+  <!-- Shopping Bag -->
+  <path d="M 70 85 L 75 55 Q 75 50 80 50 L 120 50 Q 125 50 125 55 L 130 85" fill="none" stroke="#667eea" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Bag Body -->
+  <path d="M 72 85 L 75 140 Q 75 145 80 145 L 120 145 Q 125 145 125 140 L 128 85" fill="#667eea" opacity="0.1" stroke="#667eea" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Bag Handles -->
+  <path d="M 82 50 Q 82 35 100 35 Q 118 35 118 50" fill="none" stroke="#667eea" stroke-width="3" stroke-linecap="round"/>
+  
+  <!-- Vegetable: Tomato -->
+  <circle cx="90" cy="110" r="8" fill="#ff6b6b"/>
+  <path d="M 90 102 L 88 98 L 92 98 Z" fill="#2d5016"/>
+  
+  <!-- Vegetable: Carrot -->
+  <path d="M 110 108 L 118 120" stroke="#ffa500" stroke-width="6" stroke-linecap="round"/>
+  <path d="M 114 110 L 117 107 L 119 108" fill="#2d5016"/>
+  
+  <!-- Vegetable: Lettuce -->
+  <circle cx="100" cy="125" r="6" fill="#52b788" opacity="0.7"/>
+  <circle cx="100" cy="125" r="6" fill="none" stroke="#2d5016" stroke-width="1.5" opacity="0.6"/>
+  
+  <!-- Bottom text arc (optional, can be removed if too cluttered) -->
+  <text x="100" y="165" text-anchor="middle" font-size="14" font-weight="bold" fill="#667eea" font-family="Arial, sans-serif">DANU</text>
+</svg>

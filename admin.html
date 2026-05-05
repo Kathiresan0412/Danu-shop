@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0f8b57">
+    <link rel="icon" type="image/png" href="./images/logo.png">
+    <title>Danu Multi Shop Admin</title>
+    <style>
+        :root {
+            --green: #0f8b57;
+            --green-dark: #0a5d40;
+            --mint: #e7f7ee;
+            --orange: #f47c24;
+            --red: #e93d4f;
+            --ink: #1d2520;
+            --muted: #69756f;
+            --line: #dde7e1;
+            --paper: #ffffff;
+            --bg: #f7faf5;
+            --radius: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background:
+                radial-gradient(circle at top left, rgba(244, 124, 36, 0.14), transparent 28rem),
+                linear-gradient(180deg, #fbfff9 0%, var(--bg) 100%);
+            color: var(--ink);
+            font-family: Inter, "Segoe UI", Arial, sans-serif;
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        .shell {
+            width: min(1080px, calc(100% - 28px));
+            margin: 0 auto;
+            padding: 28px 0 50px;
+        }
+
+        .topbar {
+            align-items: center;
+            display: flex;
+            justify-content: space-between;
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+
+        .brand {
+            align-items: center;
+            display: flex;
+            gap: 12px;
+        }
+
+        .brand img,
+        .logo-preview {
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 8px 20px rgba(15, 93, 64, 0.16);
+            height: 54px;
+            object-fit: cover;
+            width: 54px;
+        }
+
+        .logo-upload {
+            align-items: center;
+            display: grid;
+            gap: 14px;
+            grid-template-columns: 64px 1fr;
+        }
+
+        .brand strong {
+            color: var(--green-dark);
+            display: block;
+            font-size: 1.25rem;
+            line-height: 1.1;
+        }
+
+        .brand span {
+            color: var(--muted);
+            font-size: 0.88rem;
+        }
+
+        .home-link,
+        button {
+            align-items: center;
+            background: var(--green);
+            border: 0;
+            border-radius: 999px;
+            color: #fff;
+            cursor: pointer;
+            display: inline-flex;
+            font: inherit;
+            font-weight: 800;
+            justify-content: center;
+            min-height: 44px;
+            padding: 10px 18px;
+            text-decoration: none;
+            transition: 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .home-link {
+            background: var(--mint);
+            color: var(--green-dark);
+        }
+
+        button:hover,
+        .home-link:hover {
+            transform: translateY(-1px);
+        }
+
+        .grid {
+            display: grid;
+            gap: 20px;
+            grid-template-columns: 0.9fr 1.1fr;
+        }
+
+        .profile-panel {
+            grid-column: 1 / -1;
+        }
+
+        .panel {
+            background: var(--paper);
+            border: 1px solid rgba(15, 139, 87, 0.12);
+            border-radius: var(--radius);
+            box-shadow: 0 14px 36px rgba(29, 37, 32, 0.08);
+            padding: 22px;
+        }
+
+        .panel h1,
+        .panel h2 {
+            font-size: 1.45rem;
+            line-height: 1.15;
+            margin-bottom: 8px;
+        }
+
+        .panel p {
+            color: var(--muted);
+            margin-bottom: 18px;
+        }
+
+        form {
+            display: grid;
+            gap: 14px;
+        }
+
+        label {
+            color: var(--ink);
+            display: grid;
+            font-size: 0.9rem;
+            font-weight: 800;
+            gap: 6px;
+        }
+
+        input,
+        select,
+        textarea {
+            background: #fff;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            color: var(--ink);
+            font: inherit;
+            min-height: 44px;
+            padding: 10px 12px;
+            width: 100%;
+        }
+
+        textarea {
+            min-height: 96px;
+            resize: vertical;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--green);
+            box-shadow: 0 0 0 3px rgba(15, 139, 87, 0.14);
+            outline: none;
+        }
+
+        .two {
+            display: grid;
+            gap: 12px;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .status {
+            border-radius: var(--radius);
+            display: none;
+            font-weight: 800;
+            padding: 10px 12px;
+        }
+
+        .status.show {
+            display: block;
+        }
+
+        .status.error {
+            background: #fff0f2;
+            color: var(--red);
+        }
+
+        .status.success {
+            background: var(--mint);
+            color: var(--green-dark);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .products-list {
+            display: grid;
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .product-row {
+            align-items: center;
+            background: #fbfdf9;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            display: grid;
+            gap: 12px;
+            grid-template-columns: 56px 1fr auto auto;
+            padding: 12px;
+        }
+
+        .emoji {
+            align-items: center;
+            background: linear-gradient(135deg, #e9f9ef 0%, #fff5dc 100%);
+            border-radius: var(--radius);
+            display: flex;
+            font-size: 2rem;
+            height: 56px;
+            justify-content: center;
+            width: 56px;
+        }
+
+        .product-row strong {
+            display: block;
+            line-height: 1.2;
+        }
+
+        .product-row span {
+            color: var(--muted);
+            display: block;
+            font-size: 0.86rem;
+            margin-top: 3px;
+        }
+
+        .pill {
+            background: #fff0e6;
+            border-radius: 999px;
+            color: var(--orange);
+            font-size: 0.78rem;
+            font-weight: 900;
+            padding: 7px 10px;
+            white-space: nowrap;
+        }
+
+        .row-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .small-btn {
+            border-radius: var(--radius);
+            font-size: 0.86rem;
+            min-height: 38px;
+            padding: 8px 12px;
+        }
+
+        .edit-btn {
+            background: var(--mint);
+            color: var(--green-dark);
+        }
+
+        .delete-btn {
+            background: #fff0f2;
+            color: var(--red);
+        }
+
+        .form-actions {
+            display: grid;
+            gap: 10px;
+            grid-template-columns: 1fr auto;
+        }
+
+        .cancel-btn {
+            background: #eef3ef;
+            color: var(--green-dark);
+        }
+
+        @media (max-width: 820px) {
+            .topbar,
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .home-link {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 540px) {
+            .two,
+            .product-row {
+                grid-template-columns: 1fr;
+            }
+
+            .product-row {
+                align-items: flex-start;
+            }
+
+            .row-actions,
+            .form-actions {
+                grid-template-columns: 1fr;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="shell">
+        <div class="topbar">
+            <div class="brand">
+                <img src="./images/logo.png" alt="Danu Multi Shop logo" data-shop-logo>
+                <div>
+                    <strong><span data-shop-name>Danu Multi Shop</span> Admin</strong>
+                    <span>Add offers without a database</span>
+                </div>
+            </div>
+            <a href="./index.html" class="home-link">View Website</a>
+        </div>
+
+        <section id="login-panel" class="panel">
+            <h1>Admin Login</h1>
+            <p>Use the username and password from `app-data.js`.</p>
+            <form id="login-form">
+                <label>
+                    Username
+                    <input name="username" autocomplete="username" required>
+                </label>
+                <label>
+                    Password
+                    <input name="password" type="password" autocomplete="current-password" required>
+                </label>
+                <button type="submit">Login</button>
+                <div id="login-status" class="status"></div>
+            </form>
+        </section>
+
+        <section id="admin-panel" class="grid hidden">
+            <div class="panel profile-panel">
+                <h2>Shop Profile</h2>
+                <p>Change shop name, icon, WhatsApp number, and admin login details.</p>
+                <form id="profile-form">
+                    <label>
+                        Shop Name
+                        <input name="shopName" required>
+                    </label>
+                    <label class="logo-upload">
+                        <img src="./images/logo.png" alt="Logo preview" class="logo-preview" id="logo-preview">
+                        <span>
+                            Logo Image
+                            <input name="logoFile" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml">
+                        </span>
+                    </label>
+                    <label>
+                        Tagline
+                        <input name="shopTagline" placeholder="Fresh groceries in Mallavi">
+                    </label>
+                    <div class="two">
+                        <label>
+                            WhatsApp Number
+                            <input name="whatsappNumber" placeholder="94771234567" required>
+                        </label>
+                        <label>
+                            Admin Username
+                            <input name="adminUsername" required>
+                        </label>
+                    </div>
+                    <label>
+                        Admin Password
+                        <input name="adminPassword" type="password" required>
+                    </label>
+                    <button type="submit">Save Profile</button>
+                    <div id="profile-status" class="status"></div>
+                </form>
+            </div>
+
+            <div class="panel">
+                <h2 id="form-title">Add Product</h2>
+                <p>Use text like 🥦, 🍎, 🥕, or any short symbol as the product image.</p>
+                <form id="product-form">
+                    <input type="hidden" name="id">
+                    <div class="two">
+                        <label>
+                            Section
+                            <select name="section">
+                                <option value="today">Today's Offers</option>
+                                <option value="week">Week Offers</option>
+                                <option value="special">Special Offers</option>
+                            </select>
+                        </label>
+                        <label>
+                            Image Text
+                            <input name="imageText" maxlength="12" placeholder="🥦" required>
+                        </label>
+                    </div>
+                    <label>
+                        Product Name
+                        <input name="name" placeholder="Fresh Broccoli (500g)" required>
+                    </label>
+                    <div class="two">
+                        <label>
+                            Category
+                            <input name="category" placeholder="Fresh Vegetables">
+                        </label>
+                        <label>
+                            Discount
+                            <input name="discount" placeholder="40% OFF">
+                        </label>
+                    </div>
+                    <label>
+                        Description
+                        <textarea name="description" placeholder="Healthy green broccoli for nutritious meals"></textarea>
+                    </label>
+                    <div class="two">
+                        <label>
+                            Price
+                            <input name="price" placeholder="Rs. 90" required>
+                        </label>
+                        <label>
+                            Original Price
+                            <input name="originalPrice" placeholder="Rs. 150">
+                        </label>
+                    </div>
+                    <div class="two">
+                        <label>
+                            Footer Left
+                            <input name="footerLeft" placeholder="Week deal">
+                        </label>
+                        <label>
+                            Footer Right
+                            <input name="footerRight" placeholder="500g">
+                        </label>
+                    </div>
+                    <div class="two">
+                        <label>
+                            Start Date
+                            <input name="startDate" type="datetime-local">
+                        </label>
+                        <label>
+                            End Date
+                            <input name="endDate" type="datetime-local">
+                        </label>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" id="save-button">Add Product</button>
+                        <button type="button" id="cancel-edit" class="cancel-btn hidden">Cancel</button>
+                    </div>
+                    <div id="product-status" class="status"></div>
+                </form>
+            </div>
+
+            <div class="panel">
+                <h2>Current Products</h2>
+                <p>New products are saved in this browser and appear on the website on this same computer.</p>
+                <div id="products-list" class="products-list"></div>
+            </div>
+        </section>
+    </main>
+
+    <script src="./app-data.js"></script>
+    <script>
+        const config = window.DANU_CONFIG;
+        const loginPanel = document.querySelector("#login-panel");
+        const adminPanel = document.querySelector("#admin-panel");
+        const loginForm = document.querySelector("#login-form");
+        const profileForm = document.querySelector("#profile-form");
+        const productForm = document.querySelector("#product-form");
+        const productsList = document.querySelector("#products-list");
+        const formTitle = document.querySelector("#form-title");
+        const saveButton = document.querySelector("#save-button");
+        const cancelEdit = document.querySelector("#cancel-edit");
+        const logoPreview = document.querySelector("#logo-preview");
+
+        loginForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const payload = Object.fromEntries(new FormData(loginForm));
+            const profile = getProfile();
+
+            if (payload.username !== profile.adminUsername || payload.password !== profile.adminPassword) {
+                showStatus("#login-status", "Invalid username or password.", "error");
+                return;
+            }
+
+            sessionStorage.setItem("danu-admin-login", "yes");
+            loginPanel.classList.add("hidden");
+            adminPanel.classList.remove("hidden");
+            loadProfileForm();
+            loadProducts();
+        });
+
+        profileForm.logoFile.addEventListener("change", async () => {
+            const logoDataUrl = await readLogoFile(profileForm.logoFile.files[0]);
+            if (logoDataUrl) logoPreview.src = logoDataUrl;
+        });
+
+        profileForm.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const currentProfile = getProfile();
+            const logoDataUrl = await readLogoFile(profileForm.logoFile.files[0]);
+            const profile = normalizeProfile({
+                ...Object.fromEntries(new FormData(profileForm)),
+                logoDataUrl: logoDataUrl || currentProfile.logoDataUrl
+            });
+
+            if (!saveProfile(profile)) {
+                showStatus("#profile-status", "Browser storage is blocked. Try opening this page in Chrome.", "error");
+                return;
+            }
+
+            applyProfile(profile);
+            showStatus("#profile-status", "Profile updated successfully.", "success");
+        });
+
+        productForm.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const payload = Object.fromEntries(new FormData(productForm));
+            const products = getProducts();
+
+            if (!payload.name || !payload.price || !payload.imageText) {
+                showStatus("#product-status", "Could not save product. Please check required fields.", "error");
+                return;
+            }
+
+            const product = normalizeProduct(payload);
+            const existingIndex = products.findIndex((item) => item.id === payload.id);
+
+            if (existingIndex >= 0) {
+                products[existingIndex] = product;
+            } else {
+                products.push(product);
+            }
+
+            if (!saveProducts(products)) {
+                showStatus("#product-status", "Browser storage is blocked. Try opening this page in Chrome.", "error");
+                return;
+            }
+
+            resetForm();
+            showStatus("#product-status", existingIndex >= 0 ? "Product updated successfully." : "Product added successfully.", "success");
+            loadProducts();
+        });
+
+        cancelEdit.addEventListener("click", resetForm);
+
+        productsList.addEventListener("click", (event) => {
+            const button = event.target.closest("button[data-action]");
+            if (!button) return;
+
+            const productId = button.dataset.id;
+            const products = getProducts();
+            const product = products.find((item) => item.id === productId);
+            if (!product) return;
+
+            if (button.dataset.action === "edit") {
+                fillForm(product);
+                showStatus("#product-status", "Editing product. Update details and save.", "success");
+                productForm.scrollIntoView({ behavior: "smooth", block: "start" });
+                return;
+            }
+
+            if (button.dataset.action === "delete") {
+                const shouldDelete = confirm(`Delete ${product.name}?`);
+                if (!shouldDelete) return;
+
+                const nextProducts = products.filter((item) => item.id !== productId);
+                if (!saveProducts(nextProducts)) {
+                    showStatus("#product-status", "Browser storage is blocked. Try opening this page in Chrome.", "error");
+                    return;
+                }
+
+                resetForm();
+                showStatus("#product-status", "Product deleted successfully.", "success");
+                loadProducts();
+            }
+        });
+
+        if (sessionStorage.getItem("danu-admin-login") === "yes") {
+            loginPanel.classList.add("hidden");
+            adminPanel.classList.remove("hidden");
+            loadProfileForm();
+            loadProducts();
+        }
+
+        applyProfile(getProfile());
+
+        function loadProducts() {
+            const products = getProducts();
+            productsList.innerHTML = products.map((product) => `
+                <article class="product-row">
+                    <div class="emoji">${escapeHtml(product.imageText)}</div>
+                    <div>
+                        <strong>${escapeHtml(product.name)}</strong>
+                        <span>${escapeHtml(product.price)} ${product.originalPrice ? `| ${escapeHtml(product.originalPrice)}` : ""}</span>
+                        <span>${escapeHtml(formatDateRange(product))}</span>
+                    </div>
+                    <div class="pill">${escapeHtml(sectionLabel(product.section))}</div>
+                    <div class="row-actions">
+                        <button type="button" class="small-btn edit-btn" data-action="edit" data-id="${escapeHtml(product.id)}">Edit</button>
+                        <button type="button" class="small-btn delete-btn" data-action="delete" data-id="${escapeHtml(product.id)}">Delete</button>
+                    </div>
+                </article>
+            `).join("");
+        }
+
+        function getProducts() {
+            try {
+                const savedProducts = localStorage.getItem(config.storageKey);
+                const products = savedProducts ? JSON.parse(savedProducts) : config.products.slice();
+                return products.map((product) => ({
+                    ...product,
+                    section: product.section === "weekend" ? "week" : product.section
+                }));
+            } catch (error) {
+                return config.products.slice();
+            }
+        }
+
+        function saveProducts(products) {
+            try {
+                localStorage.setItem(config.storageKey, JSON.stringify(products));
+                return true;
+            } catch (error) {
+                return false;
+            }
+        }
+
+        function normalizeProduct(product) {
+            const section = ["today", "week", "special"].includes(product.section) ? product.section : "today";
+
+            return {
+                id: cleanText(product.id) || `${Date.now()}`,
+                section,
+                name: cleanText(product.name),
+                category: cleanText(product.category) || "Fresh Grocery",
+                description: cleanText(product.description) || "Fresh item available at Danu Multi Shop.",
+                imageText: cleanText(product.imageText),
+                price: cleanText(product.price),
+                originalPrice: cleanText(product.originalPrice),
+                discount: cleanText(product.discount) || "Special",
+                footerLeft: cleanText(product.footerLeft) || "Visit our store",
+                footerRight: cleanText(product.footerRight) || sectionLabel(section),
+                startDate: cleanText(product.startDate),
+                endDate: cleanText(product.endDate)
+            };
+        }
+
+        function fillForm(product) {
+            productForm.elements.id.value = product.id || "";
+            productForm.elements.section.value = product.section === "weekend" ? "week" : product.section || "today";
+            productForm.elements.imageText.value = product.imageText || "";
+            productForm.elements.name.value = product.name || "";
+            productForm.elements.category.value = product.category || "";
+            productForm.elements.discount.value = product.discount || "";
+            productForm.elements.description.value = product.description || "";
+            productForm.elements.price.value = product.price || "";
+            productForm.elements.originalPrice.value = product.originalPrice || "";
+            productForm.elements.footerLeft.value = product.footerLeft || "";
+            productForm.elements.footerRight.value = product.footerRight || "";
+            productForm.elements.startDate.value = toDateInputValue(product.startDate);
+            productForm.elements.endDate.value = toDateInputValue(product.endDate);
+
+            formTitle.textContent = "Edit Product";
+            saveButton.textContent = "Save Changes";
+            cancelEdit.classList.remove("hidden");
+        }
+
+        function resetForm() {
+            productForm.reset();
+            productForm.elements.id.value = "";
+            formTitle.textContent = "Add Product";
+            saveButton.textContent = "Add Product";
+            cancelEdit.classList.add("hidden");
+        }
+
+        function getProfile() {
+            const defaultProfile = {
+                shopName: config.shopName,
+                shopTagline: config.shopTagline,
+                logoPath: config.logoPath,
+                logoDataUrl: "",
+                adminUsername: config.adminUsername,
+                adminPassword: config.adminPassword,
+                whatsappNumber: config.whatsappNumber
+            };
+
+            try {
+                const savedProfile = localStorage.getItem(config.profileStorageKey);
+                if (!savedProfile) return defaultProfile;
+                return { ...defaultProfile, ...JSON.parse(savedProfile) };
+            } catch (error) {
+                return defaultProfile;
+            }
+        }
+
+        function normalizeProfile(profile) {
+            return {
+                shopName: cleanText(profile.shopName) || config.shopName,
+                shopTagline: cleanText(profile.shopTagline) || config.shopTagline,
+                logoPath: config.logoPath,
+                logoDataUrl: profile.logoDataUrl || "",
+                adminUsername: cleanText(profile.adminUsername) || config.adminUsername,
+                adminPassword: cleanText(profile.adminPassword) || config.adminPassword,
+                whatsappNumber: cleanText(profile.whatsappNumber).replace(/[^\d]/g, "") || config.whatsappNumber
+            };
+        }
+
+        function saveProfile(profile) {
+            try {
+                localStorage.setItem(config.profileStorageKey, JSON.stringify(profile));
+                return true;
+            } catch (error) {
+                return false;
+            }
+        }
+
+        function loadProfileForm() {
+            const profile = getProfile();
+            profileForm.elements.shopName.value = profile.shopName;
+            profileForm.elements.shopTagline.value = profile.shopTagline;
+            profileForm.elements.whatsappNumber.value = profile.whatsappNumber;
+            profileForm.elements.adminUsername.value = profile.adminUsername;
+            profileForm.elements.adminPassword.value = profile.adminPassword;
+            profileForm.elements.logoFile.value = "";
+            logoPreview.src = profile.logoDataUrl || profile.logoPath;
+        }
+
+        function applyProfile(profile) {
+            document.querySelectorAll("[data-shop-name]").forEach((element) => {
+                element.textContent = profile.shopName;
+            });
+
+            document.querySelectorAll("[data-shop-logo]").forEach((image) => {
+                image.src = profile.logoDataUrl || profile.logoPath;
+                image.alt = `${profile.shopName} logo`;
+            });
+        }
+
+        function readLogoFile(file) {
+            return new Promise((resolve) => {
+                if (!file) {
+                    resolve("");
+                    return;
+                }
+
+                if (file.size > 1500000) {
+                    showStatus("#profile-status", "Logo image is too large. Please use an image under 1.5 MB.", "error");
+                    resolve("");
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = () => resolve(String(reader.result || ""));
+                reader.onerror = () => {
+                    showStatus("#profile-status", "Could not read logo image.", "error");
+                    resolve("");
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function sectionLabel(section) {
+            if (section === "week" || section === "weekend") return "Week";
+            if (section === "special") return "Special";
+            return "Today";
+        }
+
+        function formatDateRange(product) {
+            if (!product.startDate && !product.endDate) return "No duration set";
+            const start = product.startDate ? formatDate(product.startDate) : "Now";
+            const end = product.endDate ? formatDate(product.endDate) : "No end";
+            return `${start} - ${end}`;
+        }
+
+        function formatDate(value) {
+            const date = new Date(value);
+            if (Number.isNaN(date.getTime())) return value;
+            return date.toLocaleDateString([], { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+        }
+
+        function toDateInputValue(value) {
+            if (!value) return "";
+            const date = new Date(value);
+            if (Number.isNaN(date.getTime())) return "";
+            const timezoneOffset = date.getTimezoneOffset() * 60000;
+            return new Date(date.getTime() - timezoneOffset).toISOString().slice(0, 16);
+        }
+
+        function cleanText(value) {
+            return String(value || "").trim().slice(0, 160);
+        }
+
+        function showStatus(selector, message, type) {
+            const element = document.querySelector(selector);
+            element.textContent = message;
+            element.className = `status show ${type}`;
+            setTimeout(() => element.classList.remove("show"), 3500);
+        }
+
+        function escapeHtml(value) {
+            return String(value || "").replace(/[&<>"']/g, (char) => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                "\"": "&quot;",
+                "'": "&#039;"
+            }[char]));
+        }
+    </script>
+</body>
+</html>

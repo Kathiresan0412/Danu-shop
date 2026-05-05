@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Danu Multi Shop - Your trusted grocery store in Mallavi, Sri Lanka. Fresh vegetables, fruits, daily essentials at affordable prices.">
+    <meta name="theme-color" content="#0f8b57">
+    <meta property="og:type" content="business.business">
+    <meta property="og:title" content="Danu Multi Shop - Fresh Grocery Deals">
+    <meta property="og:description" content="Fresh vegetables, fruits, and daily essentials at friendly prices in Mallavi.">
+    <meta property="og:image" content="./images/meta-share.svg">
+    <meta property="og:url" content="https://danumultishop.lk">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Danu Multi Shop">
+    <meta name="twitter:description" content="Fresh Groceries & Household Items in Mallavi">
+    <meta name="twitter:image" content="./images/meta-share.svg">
+    <link rel="icon" type="image/png" href="./images/logo.png">
+    <title>Danu Multi Shop - Fresh Deals in Mallavi</title>
+    <style>
+        :root {
+            --green: #0f8b57;
+            --green-dark: #0a5d40;
+            --mint: #e7f7ee;
+            --orange: #f47c24;
+            --red: #e93d4f;
+            --ink: #1d2520;
+            --muted: #69756f;
+            --line: #dde7e1;
+            --paper: #ffffff;
+            --bg: #f7faf5;
+            --shadow: 0 18px 45px rgba(24, 61, 39, 0.13);
+            --radius: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background:
+                radial-gradient(circle at top left, rgba(244, 124, 36, 0.12), transparent 32rem),
+                linear-gradient(180deg, #fbfff9 0%, var(--bg) 45%, #ffffff 100%);
+            color: var(--ink);
+            font-family: Inter, "Segoe UI", Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            background: rgba(255, 255, 255, 0.92);
+            border-bottom: 1px solid rgba(15, 139, 87, 0.14);
+            box-shadow: 0 8px 24px rgba(15, 93, 64, 0.08);
+            backdrop-filter: blur(18px);
+        }
+
+        .header-content {
+            width: min(1160px, calc(100% - 32px));
+            min-height: 78px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+            text-decoration: none;
+        }
+
+        .brand img {
+            width: 54px;
+            height: 54px;
+            border: 2px solid rgba(15, 139, 87, 0.16);
+            border-radius: 50%;
+            background: #fff;
+            box-shadow: 0 6px 18px rgba(15, 93, 64, 0.15);
+            flex: 0 0 auto;
+            object-fit: cover;
+        }
+
+        .brand-title {
+            display: grid;
+            gap: 1px;
+            min-width: 0;
+        }
+
+        .brand-title strong {
+            color: var(--green-dark);
+            font-size: 1.25rem;
+            line-height: 1.1;
+            white-space: nowrap;
+        }
+
+        .brand-title span {
+            color: var(--muted);
+            font-size: 0.82rem;
+            line-height: 1.2;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-links a {
+            border-radius: 999px;
+            color: var(--green-dark);
+            font-size: 0.94rem;
+            font-weight: 700;
+            padding: 9px 13px;
+            text-decoration: none;
+            transition: 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            background: var(--mint);
+            color: var(--green);
+        }
+
+        .whatsapp-btn,
+        .product-cta {
+            align-items: center;
+            background: var(--green);
+            border-radius: 999px;
+            box-shadow: 0 10px 24px rgba(15, 139, 87, 0.2);
+            color: #fff;
+            display: inline-flex;
+            font-weight: 800;
+            gap: 8px;
+            justify-content: center;
+            min-height: 44px;
+            padding: 10px 18px;
+            text-decoration: none;
+            transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .whatsapp-btn:hover,
+        .product-cta:hover {
+            background: var(--green-dark);
+            box-shadow: 0 14px 28px rgba(15, 139, 87, 0.24);
+            transform: translateY(-1px);
+        }
+
+        .hero {
+            min-height: clamp(540px, 82vh, 760px);
+            position: relative;
+            display: grid;
+            align-items: end;
+            overflow: hidden;
+            color: #fff;
+            isolation: isolate;
+        }
+
+        .hero::before {
+            position: absolute;
+            inset: 0;
+            z-index: -2;
+            background: url("./images/header.png") center / cover no-repeat;
+            content: "";
+            transform: scale(1.02);
+        }
+
+        .hero::after {
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            background:
+                linear-gradient(90deg, rgba(8, 38, 28, 0.85) 0%, rgba(8, 38, 28, 0.62) 46%, rgba(8, 38, 28, 0.18) 100%),
+                linear-gradient(180deg, rgba(8, 38, 28, 0.12) 0%, rgba(8, 38, 28, 0.76) 100%);
+            content: "";
+        }
+
+        .hero-content {
+            width: min(1160px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 96px 0 46px;
+            display: grid;
+            grid-template-columns: minmax(0, 680px);
+            gap: 24px;
+        }
+
+        .eyebrow {
+            align-items: center;
+            background: rgba(255, 255, 255, 0.16);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            border-radius: 999px;
+            display: inline-flex;
+            font-size: 0.86rem;
+            font-weight: 800;
+            gap: 8px;
+            justify-self: start;
+            letter-spacing: 0;
+            padding: 8px 13px;
+        }
+
+        h1 {
+            font-size: clamp(2.7rem, 7vw, 6rem);
+            letter-spacing: 0;
+            line-height: 0.94;
+            max-width: 760px;
+        }
+
+        .hero-copy {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: clamp(1.05rem, 2vw, 1.3rem);
+            max-width: 610px;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .secondary-btn {
+            align-items: center;
+            background: rgba(255, 255, 255, 0.94);
+            border-radius: 999px;
+            color: var(--green-dark);
+            display: inline-flex;
+            font-weight: 800;
+            min-height: 44px;
+            padding: 10px 18px;
+            text-decoration: none;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 22px;
+            max-width: 720px;
+        }
+
+        .stat {
+            background: rgba(255, 255, 255, 0.13);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: var(--radius);
+            padding: 14px;
+        }
+
+        .stat strong {
+            display: block;
+            font-size: 1.2rem;
+            line-height: 1.1;
+        }
+
+        .stat span {
+            color: rgba(255, 255, 255, 0.82);
+            display: block;
+            font-size: 0.82rem;
+            margin-top: 3px;
+        }
+
+        main {
+            width: min(1160px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 54px 0 24px;
+        }
+
+        .offer-section {
+            scroll-margin-top: 100px;
+            margin-bottom: 56px;
+        }
+
+        .section-head {
+            align-items: end;
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 22px;
+        }
+
+        .section-kicker {
+            color: var(--green);
+            font-size: 0.78rem;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        .section-head h2 {
+            color: var(--ink);
+            font-size: clamp(1.7rem, 3vw, 2.4rem);
+            line-height: 1.08;
+            margin-top: 4px;
+        }
+
+        .section-head p {
+            color: var(--muted);
+            max-width: 410px;
+        }
+
+        .badge {
+            border-radius: 999px;
+            color: #fff;
+            display: inline-flex;
+            flex: 0 0 auto;
+            font-size: 0.75rem;
+            font-weight: 900;
+            padding: 8px 12px;
+            white-space: nowrap;
+        }
+
+        .badge.today {
+            background: var(--red);
+        }
+
+        .badge.weekend {
+            background: var(--orange);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .product-card {
+            background: var(--paper);
+            border: 1px solid rgba(15, 139, 87, 0.11);
+            border-radius: var(--radius);
+            box-shadow: 0 12px 28px rgba(29, 37, 32, 0.08);
+            display: grid;
+            grid-template-rows: auto 1fr;
+            overflow: hidden;
+            transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+        }
+
+        .product-card:hover {
+            border-color: rgba(15, 139, 87, 0.28);
+            box-shadow: var(--shadow);
+            transform: translateY(-4px);
+        }
+
+        .product-image {
+            align-items: center;
+            aspect-ratio: 4 / 3;
+            background:
+                radial-gradient(circle at 35% 25%, rgba(255, 255, 255, 0.95), transparent 5rem),
+                linear-gradient(135deg, #e9f9ef 0%, #fff5dc 100%);
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+
+        .product-image .emoji {
+            filter: drop-shadow(0 14px 12px rgba(29, 37, 32, 0.13));
+            font-size: clamp(3.4rem, 6vw, 5rem);
+            line-height: 1;
+        }
+
+        .offer-badge {
+            background: var(--red);
+            border-radius: 999px;
+            box-shadow: 0 8px 16px rgba(233, 61, 79, 0.26);
+            color: #fff;
+            font-size: 0.72rem;
+            font-weight: 900;
+            padding: 7px 10px;
+            position: absolute;
+            right: 12px;
+            top: 12px;
+        }
+
+        .product-info {
+            display: grid;
+            gap: 10px;
+            padding: 18px;
+        }
+
+        .product-category {
+            color: var(--green);
+            font-size: 0.78rem;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        .product-name {
+            color: var(--ink);
+            font-size: 1.08rem;
+            font-weight: 900;
+            line-height: 1.2;
+        }
+
+        .product-description {
+            color: var(--muted);
+            font-size: 0.93rem;
+            line-height: 1.45;
+        }
+
+        .price-section {
+            align-items: center;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .price {
+            color: var(--green-dark);
+            font-size: 1.35rem;
+            font-weight: 950;
+        }
+
+        .original-price {
+            color: #8d9991;
+            font-size: 0.93rem;
+            text-decoration: line-through;
+        }
+
+        .discount-percent {
+            background: #fff0e6;
+            border-radius: 999px;
+            color: var(--orange);
+            font-size: 0.76rem;
+            font-weight: 900;
+            padding: 4px 8px;
+        }
+
+        .date-range,
+        .countdown {
+            border-radius: var(--radius);
+            font-size: 0.82rem;
+            font-weight: 800;
+            padding: 8px 10px;
+        }
+
+        .date-range {
+            background: var(--mint);
+            color: var(--green-dark);
+        }
+
+        .countdown {
+            background: #fff0f2;
+            color: var(--red);
+        }
+
+        .product-footer {
+            align-items: center;
+            border-top: 1px solid var(--line);
+            color: var(--muted);
+            display: flex;
+            font-size: 0.83rem;
+            font-weight: 700;
+            justify-content: space-between;
+            margin-top: 4px;
+            padding-top: 12px;
+        }
+
+        .empty-state {
+            background: var(--paper);
+            border: 1px dashed rgba(15, 139, 87, 0.32);
+            border-radius: var(--radius);
+            color: var(--muted);
+            grid-column: 1 / -1;
+            padding: 26px;
+            text-align: center;
+        }
+
+        .store-strip {
+            align-items: center;
+            background: var(--green-dark);
+            border-radius: var(--radius);
+            color: #fff;
+            display: grid;
+            gap: 22px;
+            grid-template-columns: 1.3fr 0.7fr;
+            margin: 20px 0 58px;
+            overflow: hidden;
+            padding: 26px;
+        }
+
+        .store-strip h2 {
+            font-size: clamp(1.55rem, 3vw, 2.25rem);
+            line-height: 1.1;
+            margin-bottom: 8px;
+        }
+
+        .store-strip p {
+            color: rgba(255, 255, 255, 0.82);
+            max-width: 620px;
+        }
+
+        .hours {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: var(--radius);
+            padding: 18px;
+        }
+
+        .hours strong {
+            display: block;
+            font-size: 1.2rem;
+        }
+
+        .hours span {
+            color: rgba(255, 255, 255, 0.78);
+            display: block;
+            margin-top: 4px;
+        }
+
+        footer {
+            background: #101714;
+            color: #fff;
+            margin-top: 46px;
+            padding: 46px 0 24px;
+        }
+
+        .footer-content,
+        .footer-bottom {
+            width: min(1160px, calc(100% - 32px));
+            margin: 0 auto;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr 1fr 0.9fr;
+            gap: 26px;
+        }
+
+        .footer-section h3 {
+            color: #8fe0b3;
+            font-size: 1rem;
+            margin-bottom: 12px;
+        }
+
+        .footer-section p,
+        .footer-section li,
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.72);
+            font-size: 0.94rem;
+            text-decoration: none;
+        }
+
+        .footer-section ul {
+            display: grid;
+            gap: 8px;
+            list-style: none;
+        }
+
+        .footer-section a:hover {
+            color: #fff;
+        }
+
+        .contact-info {
+            display: grid;
+            gap: 7px;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.52);
+            font-size: 0.85rem;
+            margin-top: 30px;
+            padding-top: 20px;
+            text-align: center;
+        }
+
+        @media (max-width: 980px) {
+            .header-content {
+                align-items: flex-start;
+                flex-direction: column;
+                justify-content: center;
+                padding: 12px 0;
+            }
+
+            .header-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .nav-links {
+                max-width: 100%;
+                overflow-x: auto;
+                padding-bottom: 2px;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .footer-content,
+            .store-strip {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .brand-title strong {
+                font-size: 1.05rem;
+            }
+
+            .brand-title span {
+                font-size: 0.76rem;
+            }
+
+            .header-actions {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .nav-links {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+                width: 100%;
+            }
+
+            .nav-links a,
+            .whatsapp-btn {
+                background: var(--mint);
+                border-radius: var(--radius);
+                color: var(--green-dark);
+                min-height: 42px;
+                padding: 10px 12px;
+                text-align: center;
+                white-space: normal;
+            }
+
+            .whatsapp-btn {
+                background: var(--green);
+                color: #fff;
+            }
+
+            .hero {
+                min-height: 620px;
+            }
+
+            .hero::after {
+                background:
+                    linear-gradient(180deg, rgba(8, 38, 28, 0.4) 0%, rgba(8, 38, 28, 0.91) 100%);
+            }
+
+            .hero-content {
+                padding: 92px 0 28px;
+            }
+
+            .hero-actions {
+                display: grid;
+                grid-template-columns: 1fr;
+            }
+
+            .secondary-btn,
+            .hero .whatsapp-btn {
+                border-radius: var(--radius);
+                width: 100%;
+            }
+
+            .hero-stats {
+                grid-template-columns: 1fr;
+            }
+
+            main {
+                padding-top: 34px;
+            }
+
+            .section-head {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .products-grid,
+            .footer-content,
+            .store-strip {
+                grid-template-columns: 1fr;
+            }
+
+            .product-info {
+                padding: 16px;
+            }
+
+            .store-strip {
+                padding: 22px;
+            }
+        }
+
+        @media (max-width: 430px) {
+            .header-content,
+            .hero-content,
+            main,
+            .footer-content,
+            .footer-bottom {
+                width: min(100% - 22px, 1160px);
+            }
+
+            .brand img {
+                height: 46px;
+                width: 46px;
+            }
+
+            h1 {
+                font-size: 2.45rem;
+            }
+
+            .products-grid {
+                gap: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-content">
+            <a href="#" class="brand" aria-label="Danu Multi Shop home">
+                <img src="./images/logo.png" alt="Danu Multi Shop logo" data-shop-logo>
+                <span class="brand-title">
+                    <strong data-shop-name>Danu Multi Shop</strong>
+                    <span data-shop-tagline>Fresh groceries in Mallavi</span>
+                </span>
+            </a>
+
+            <div class="header-actions">
+                <nav class="nav-links" aria-label="Main navigation">
+                    <a href="#today">Today's Offers</a>
+                    <a href="#week">Week Offers</a>
+                    <a href="#special">Special Offers</a>
+                </nav>
+                <a href="https://wa.me/94XXXXXXXXX" target="_blank" rel="noreferrer" class="whatsapp-btn" data-whatsapp-link>WhatsApp Us</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero" aria-label="Danu Multi Shop">
+        <div class="hero-content">
+            <span class="eyebrow">B269, Mallavi 42000</span>
+            <h1 data-shop-name>Danu Multi Shop</h1>
+            <p class="hero-copy">Fresh vegetables, sweet fruits, household essentials, and everyday offers from your trusted neighborhood grocery store.</p>
+            <div class="hero-actions">
+                <a href="#today" class="whatsapp-btn">View Today's Deals</a>
+                <a href="https://wa.me/94XXXXXXXXX" target="_blank" rel="noreferrer" class="secondary-btn" data-whatsapp-link>Order on WhatsApp</a>
+            </div>
+            <div class="hero-stats" aria-label="Store highlights">
+                <div class="stat">
+                    <strong>Open Daily</strong>
+                    <span>8:00 AM - 10:00 PM</span>
+                </div>
+                <div class="stat">
+                    <strong>Fresh Stock</strong>
+                    <span>Vegetables, fruits, essentials</span>
+                </div>
+                <div class="stat">
+                    <strong>Best Deals</strong>
+                    <span>Today, week, and special offers</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main>
+        <section id="today" class="offer-section">
+            <div class="section-head">
+                <div>
+                    <span class="section-kicker">Fresh picks</span>
+                    <h2>Today's Special Offers</h2>
+                    <p>Quick savings on popular groceries for your next meal.</p>
+                </div>
+                <span class="badge today">Limited Time</span>
+            </div>
+
+            <div class="products-grid" id="today-products">
+                <article class="product-card">
+                    <div class="product-image">
+                        <span class="emoji" aria-hidden="true">🥬</span>
+                        <span class="offer-badge">25% OFF</span>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Fresh Vegetables</div>
+                        <h3 class="product-name">Fresh Spinach Bundle</h3>
+                        <p class="product-description">Crisp spinach for salads, rice, and quick home cooking.</p>
+                        <div class="price-section">
+                            <span class="price">Rs. 75</span>
+                            <span class="original-price">Rs. 100</span>
+                            <span class="discount-percent">Save 25%</span>
+                        </div>
+                        <div class="product-footer"><span>Visit our store</span><span>Today</span></div>
+                    </div>
+                </article>
+
+                <article class="product-card">
+                    <div class="product-image">
+                        <span class="emoji" aria-hidden="true">🍎</span>
+                        <span class="offer-badge">30% OFF</span>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Fresh Fruits</div>
+                        <h3 class="product-name">Red Apples (1kg)</h3>
+                        <p class="product-description">Juicy, sweet red apples selected for everyday snacking.</p>
+                        <div class="price-section">
+                            <span class="price">Rs. 210</span>
+                            <span class="original-price">Rs. 300</span>
+                            <span class="discount-percent">Save 30%</span>
+                        </div>
+                        <div class="product-footer"><span>Fresh stock</span><span>1kg</span></div>
+                    </div>
+                </article>
+
+                <article class="product-card">
+                    <div class="product-image">
+                        <span class="emoji" aria-hidden="true">🥕</span>
+                        <span class="offer-badge">20% OFF</span>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Fresh Vegetables</div>
+                        <h3 class="product-name">Fresh Carrots (1kg)</h3>
+                        <p class="product-description">Crunchy carrots for curries, soups, salads, and juice.</p>
+                        <div class="price-section">
+                            <span class="price">Rs. 80</span>
+                            <span class="original-price">Rs. 100</span>
+                            <span class="discount-percent">Save 20%</span>
+                        </div>
+                        <div class="product-footer"><span>Fresh stock</span><span>1kg</span></div>
+                    </div>
+                </article>
+
+                <article class="product-card">
+                    <div class="product-image">
+                        <span class="emoji" aria-hidden="true">🥛</span>
+                        <span class="offer-badge">15% OFF</span>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Daily Essentials</div>
+                        <h3 class="product-name">Fresh Milk (1L)</h3>
+                        <p class="product-description">Pure pasteurized milk for tea, breakfast, and baking.</p>
+                        <div class="price-section">
+                            <span class="price">Rs. 127.50</span>
+                            <span class="original-price">Rs. 150</span>
+                            <span class="discount-percent">Save 15%</span>
+                        </div>
+                        <div class="product-footer"><span>Daily essential</span><span>1L</span></div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section id="week" class="offer-section">
+            <div class="section-head">
+                <div>
+                    <span class="section-kicker">Week value</span>
+                    <h2>Week Special Offers</h2>
+                    <p>Plan ahead with bigger savings for family shopping.</p>
+                </div>
+                <span class="badge weekend">This Week</span>
+            </div>
+
+            <div class="products-grid" id="week-products">
+                <article class="product-card">
+                    <div class="product-image">
+                        <span class="emoji" aria-hidden="true">🍊</span>
+                        <span class="offer-badge">35% OFF</span>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Fresh Fruits</div>
+                        <h3 class="product-name">Fresh Oranges (1kg)</h3>
+                        <p class="product-description">Vitamin-rich oranges for juice, snacks, and lunchboxes.</p>
+                        <div class="price-section">
+                            <span class="price">Rs. 130</span>
+                            <span class="original-price">Rs. 200</span>
+                            <span class="discount-percent">Save 35%</span>
+                        </div>
+                        <div class="product-footer"><span>Weekend deal</span><span>1kg</span></div>
+                    </div>
+                </article>
+
+                <article class="product-card">
+                    <div class="product-image">
+                        <span class="emoji" aria-hidden="true">🥦</span>
+                        <span class="offer-badge">40% OFF</span>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Fresh Vegetables</div>
+                        <h3 class="product-name">Fresh Broccoli (500g)</h3>
+                        <p class="product-description">Green broccoli for healthy stir-fries and family meals.</p>
+                        <div class="price-section">
+                            <span class="price">Rs. 90</span>
+                            <span class="original-price">Rs. 150</span>
+                            <span class="discount-percent">Save 40%</span>
+                        </div>
+                        <div class="product-footer"><span>Weekend deal</span><span>500g</span></div>
+                    </div>
+                </article>
+
+                <article class="product-card">
+                    <div class="product-image">
+                        <span class="emoji" aria-hidden="true">🧅</span>
+                        <span class="offer-badge">20% OFF</span>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Fresh Vegetables</div>
+                        <h3 class="product-name">Yellow Onions (1kg)</h3>
+                        <p class="product-description">Premium onions for curries, sambols, and everyday cooking.</p>
+                        <div class="price-section">
+                            <span class="price">Rs. 80</span>
+                            <span class="original-price">Rs. 100</span>
+                            <span class="discount-percent">Save 20%</span>
+                        </div>
+                        <div class="product-footer"><span>Kitchen staple</span><span>1kg</span></div>
+                    </div>
+                </article>
+
+                <article class="product-card">
+                    <div class="product-image">
+                        <span class="emoji" aria-hidden="true">🍯</span>
+                        <span class="offer-badge">25% OFF</span>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Household Items</div>
+                        <h3 class="product-name">Pure Honey (500ml)</h3>
+                        <p class="product-description">Natural honey for tea, toast, desserts, and wellness routines.</p>
+                        <div class="price-section">
+                            <span class="price">Rs. 375</span>
+                            <span class="original-price">Rs. 500</span>
+                            <span class="discount-percent">Save 25%</span>
+                        </div>
+                        <div class="product-footer"><span>Natural choice</span><span>500ml</span></div>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section id="special" class="offer-section">
+            <div class="section-head">
+                <div>
+                    <span class="section-kicker">Extra savings</span>
+                    <h2>Special Offers</h2>
+                    <p>Featured deals and limited shop specials.</p>
+                </div>
+                <span class="badge today">Special</span>
+            </div>
+
+            <div class="products-grid" id="special-products"></div>
+        </section>
+
+        <section class="store-strip" aria-label="Store information">
+            <div>
+                <h2>Fresh groceries, friendly prices, easy shopping.</h2>
+                <p>Visit <span data-shop-name>Danu Multi Shop</span> on B269, Mallavi for vegetables, fruits, snacks, household goods, and daily essentials.</p>
+            </div>
+            <div class="hours">
+                <strong>8:00 AM - 10:00 PM</strong>
+                <span>Open every day</span>
+            </div>
+        </section>
+    </main>
+
+    <footer id="contact">
+        <div class="footer-content">
+            <section class="footer-section">
+                <h3>About</h3>
+                <p>Your trusted neighborhood grocery shop for fresh vegetables, fruits, daily essentials, household items, snacks, and affordable offers.</p>
+            </section>
+
+            <section class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#today">Today's Offers</a></li>
+                    <li><a href="#week">Week Offers</a></li>
+                    <li><a href="#special">Special Offers</a></li>
+                    <li><a href="#contact">Contact Us</a></li>
+                </ul>
+            </section>
+
+            <section class="footer-section">
+                <h3>Contact</h3>
+                <div class="contact-info">
+                    <p>Location: B269, Mallavi 42000, Sri Lanka</p>
+                    <p>Email: info@danumultishop.lk</p>
+                    <p>Phone: <span data-phone-number>+94 XX XXX XXXX</span></p>
+                    <p><a href="https://wa.me/94XXXXXXXXX" target="_blank" rel="noreferrer" data-whatsapp-link>WhatsApp Us</a></p>
+                </div>
+            </section>
+
+            <section class="footer-section">
+                <h3>Business Hours</h3>
+                <div class="contact-info">
+                    <p>Monday - Sunday</p>
+                    <p>8:00 AM - 10:00 PM</p>
+                    <p>Open daily</p>
+                </div>
+            </section>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 <span data-shop-name>Danu Multi Shop</span>. All rights reserved. Fresh Grocery Store in Mallavi.</p>
+        </div>
+    </footer>
+    <script src="./app-data.js"></script>
+    <script>
+        const config = window.DANU_CONFIG;
+        const todayProducts = document.querySelector("#today-products");
+        const weekProducts = document.querySelector("#week-products");
+        const specialProducts = document.querySelector("#special-products");
+
+        loadSiteData();
+
+        function loadSiteData() {
+            loadConfig();
+            loadProducts();
+        }
+
+        function loadConfig() {
+            const profile = getProfile();
+            const whatsappNumber = String(profile.whatsappNumber || "").replace(/[^\d]/g, "");
+            const whatsappUrl = `https://wa.me/${whatsappNumber}`;
+
+            document.querySelectorAll("[data-shop-name]").forEach((element) => {
+                element.textContent = profile.shopName;
+            });
+
+            document.querySelectorAll("[data-shop-tagline]").forEach((element) => {
+                element.textContent = profile.shopTagline;
+            });
+
+            document.querySelectorAll("[data-shop-logo]").forEach((image) => {
+                image.src = profile.logoDataUrl || profile.logoPath;
+                image.alt = `${profile.shopName} logo`;
+            });
+
+            document.querySelectorAll("[data-whatsapp-link]").forEach((link) => {
+                link.href = whatsappUrl;
+            });
+
+            document.querySelectorAll("[data-phone-number]").forEach((phone) => {
+                phone.textContent = `+${whatsappNumber}`;
+            });
+        }
+
+        function loadProducts() {
+            const products = getProducts();
+            renderProducts(todayProducts, products.filter((product) => product.section === "today"), "No today's offers added yet.");
+            renderProducts(weekProducts, products.filter((product) => product.section === "week" || product.section === "weekend"), "No week offers added yet.");
+            renderProducts(specialProducts, products.filter((product) => product.section === "special"), "No special offers added yet.");
+        }
+
+        function getProfile() {
+            const defaultProfile = {
+                shopName: config.shopName,
+                shopTagline: config.shopTagline,
+                logoPath: config.logoPath,
+                logoDataUrl: "",
+                adminUsername: config.adminUsername,
+                adminPassword: config.adminPassword,
+                whatsappNumber: config.whatsappNumber
+            };
+
+            try {
+                const savedProfile = localStorage.getItem(config.profileStorageKey);
+                if (!savedProfile) return defaultProfile;
+                return { ...defaultProfile, ...JSON.parse(savedProfile) };
+            } catch (error) {
+                return defaultProfile;
+            }
+        }
+
+        function getProducts() {
+            try {
+                const savedProducts = localStorage.getItem(config.storageKey);
+                if (!savedProducts) return config.products;
+                return JSON.parse(savedProducts);
+            } catch (error) {
+                return config.products;
+            }
+        }
+
+        function renderProducts(container, products, emptyText) {
+            if (!products.length) {
+                container.innerHTML = `<div class="empty-state">${emptyText}</div>`;
+                return;
+            }
+
+            container.innerHTML = products.map((product) => `
+                <article class="product-card">
+                    <div class="product-image">
+                        <span class="emoji" aria-hidden="true">${escapeHtml(product.imageText)}</span>
+                        <span class="offer-badge">${escapeHtml(product.discount || "Special")}</span>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">${escapeHtml(product.category)}</div>
+                        <h3 class="product-name">${escapeHtml(product.name)}</h3>
+                        <p class="product-description">${escapeHtml(product.description)}</p>
+                        ${product.startDate || product.endDate ? `<div class="date-range">${escapeHtml(formatDateRange(product))}</div>` : ""}
+                        ${product.endDate ? `<div class="countdown" data-countdown="${escapeHtml(product.endDate)}">Calculating time...</div>` : ""}
+                        <div class="price-section">
+                            <span class="price">${escapeHtml(product.price)}</span>
+                            ${product.originalPrice ? `<span class="original-price">${escapeHtml(product.originalPrice)}</span>` : ""}
+                            ${product.discount ? `<span class="discount-percent">${escapeHtml(product.discount.replace("OFF", "").trim())}</span>` : ""}
+                        </div>
+                        <div class="product-footer">
+                            <span>${escapeHtml(product.footerLeft || "Visit our store")}</span>
+                            <span>${escapeHtml(product.footerRight || "")}</span>
+                        </div>
+                    </div>
+                </article>
+            `).join("");
+
+            updateCountdowns();
+        }
+
+        function updateCountdowns() {
+            document.querySelectorAll("[data-countdown]").forEach((element) => {
+                const endDate = new Date(element.dataset.countdown);
+                const distance = endDate.getTime() - Date.now();
+
+                if (Number.isNaN(endDate.getTime())) {
+                    element.textContent = "Special offer";
+                    return;
+                }
+
+                if (distance <= 0) {
+                    element.textContent = "Offer ended";
+                    return;
+                }
+
+                const days = Math.floor(distance / 86400000);
+                const hours = Math.floor((distance % 86400000) / 3600000);
+                const minutes = Math.floor((distance % 3600000) / 60000);
+                const seconds = Math.floor((distance % 60000) / 1000);
+
+                element.textContent = days > 0
+                    ? `Ends in ${days}d ${hours}h ${minutes}m`
+                    : `Ends in ${hours}h ${minutes}m ${seconds}s`;
+            });
+        }
+
+        function formatDateRange(product) {
+            const start = product.startDate ? formatDate(product.startDate) : "Now";
+            const end = product.endDate ? formatDate(product.endDate) : "No end date";
+            return `${start} - ${end}`;
+        }
+
+        function formatDate(value) {
+            const date = new Date(value);
+            if (Number.isNaN(date.getTime())) return value;
+            return date.toLocaleDateString([], { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" });
+        }
+
+        setInterval(updateCountdowns, 1000);
+
+        function escapeHtml(value) {
+            return String(value || "").replace(/[&<>"']/g, (char) => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                "\"": "&quot;",
+                "'": "&#039;"
+            }[char]));
+        }
+    </script>
+</body>
+</html>
